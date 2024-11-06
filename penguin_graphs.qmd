@@ -5,23 +5,42 @@ format: html
 editor: visual
 ---
 
-## Quarto
+# [Penguin Graphs]{.underline}
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+## Setting Stuff up
 
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+Loading Library:
 
 ```{r}
-1 + 1
+#| output: false 
+library(tidyverse)
+library(janitor)
+library(here)
+library(ggplot2)
+
 ```
 
-You can add options to executable code like this
+Loading function for cleaning data:
 
 ```{r}
-#| echo: false
-2 * 2
+#| output: false 
+source(here("Functions", "Cleaning.R"))
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+Cleaning Data:
+
+```{r}
+#| output: false 
+penguins_raw <- read_csv(here("data", "penguins_raw.csv"))
+penguins_clean <- penguins_raw %>%
+  clean_column_names() %>%
+  remove_columns(c("comments", "delta")) %>%
+  shorten_species() %>%
+  remove_empty_columns_rows()
+
+```
+
+```{r}
+#| output: false
+penguins_clean <- read_csv(here("data", "penguins_clean.csv"))
+```
